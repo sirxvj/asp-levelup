@@ -1,0 +1,8 @@
+create function get_product_variants_by_product(product_idarg integer)
+	returns setof product_variant
+	as $$
+	begin
+		return query select * from product_variant where product_id=product_idarg;
+	end;
+	$$
+	language 'plpgsql'
