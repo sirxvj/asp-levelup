@@ -1,5 +1,0 @@
-create view reviews_for_product as
-	select r.rating, r.comment, u.username,u.first_name,u.last_name
-	from review r
-	join "user" u on r.product_id = 1 and u.id = r.user_id;
-	
