@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace ConsoleQueries.Models
 {
-    public partial class postgresContext : DbContext
+    public partial class DataBaseContext : Microsoft.EntityFrameworkCore.DbContext
     {
-        public postgresContext()
+        public DataBaseContext()
         {
         }
 
-        public postgresContext(DbContextOptions<postgresContext> options)
+        public DataBaseContext(DbContextOptions<DataBaseContext> options)
             : base(options)
         {
         }
@@ -36,7 +36,7 @@ namespace ConsoleQueries.Models
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-            {
+            { 
                 optionsBuilder.UseNpgsql("Server=localhost;Port=5432;Database=postgres;User Id=postgres;Password=rbtree");
             }
         }
