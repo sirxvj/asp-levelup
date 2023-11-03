@@ -15,7 +15,7 @@ public class Repository
     public List<Product> GetProsuctsByBrand(Brand brand)
     {
         return _dbContext.Products
-            .Include(p => p.Brand)
+            //.Include(p => p.Brand)
             .Where(p => p.Brand == brand)
             .ToList();
     }
@@ -25,7 +25,7 @@ public class Repository
         return _dbContext.ProductVariants
             .Include(p => p.Product)
             .Include(p=>p.Color)
-            .Include(p=>p.Size)
+            //.Include(p=>p.Size)
             .Where(p => p.Product == product)
             .ToList();
     }
@@ -62,6 +62,16 @@ public class Repository
     public List<Review> ReviewsByProd(Product prod)
     {
         return _dbContext.Reviews.Where(r => r.Product == prod).ToList();
+    }
+
+    public void updateUserName(User user, string username)
+    {
+        _dbContext.Entry(user).State = EntityState.Detached;
+        user.Username = username;
+        
+        _dbContext.Attach(user);
+        _dbContext.Entry(user).State = EntityState.Modified;
+        _dbContext.SaveChanges();
     }
     public void InsertBrand(Brand _brand)
     {
@@ -108,6 +118,16 @@ public class Repository
     public List<Product> GetProducts()
     {
         return _dbContext.Products.ToList();
+    }
+
+    public List<User> GetUsers()
+    {
+        return _dbContext.Users.ToList();
+    }
+
+    public User GetUserById(long id)
+    {
+        return _dbContext.Users.Where(u => u.Id == id).FirstOrDefault();
     }
     public List<Section> GetSections()
     {

@@ -37,7 +37,9 @@ namespace ConsoleQueries.Models
         {
             if (!optionsBuilder.IsConfigured)
             { 
-                optionsBuilder.UseNpgsql("Server=localhost;Port=5432;Database=postgres;User Id=postgres;Password=rbtree");
+                optionsBuilder
+                    .UseLazyLoadingProxies()
+                    .UseNpgsql("Server=localhost;Port=5432;Database=postgres;User Id=postgres;Password=rbtree");
             }
         }
 
