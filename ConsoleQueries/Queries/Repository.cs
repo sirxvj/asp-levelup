@@ -64,11 +64,10 @@ public class Repository
         return _dbContext.Reviews.Where(r => r.Product == prod).ToList();
     }
 
-    public void updateUserName(User user, string username)
+    public void UpdateUserName(User user, string username)
     {
         _dbContext.Entry(user).State = EntityState.Detached;
         user.Username = username;
-        
         _dbContext.Attach(user);
         _dbContext.Entry(user).State = EntityState.Modified;
         _dbContext.SaveChanges();
@@ -125,9 +124,9 @@ public class Repository
         return _dbContext.Users.ToList();
     }
 
-    public User GetUserById(long id)
+    public User? GetUserById(long id)
     {
-        return _dbContext.Users.Where(u => u.Id == id).FirstOrDefault();
+        return _dbContext.Users.FirstOrDefault(u => u.Id == id);
     }
     public List<Section> GetSections()
     {
