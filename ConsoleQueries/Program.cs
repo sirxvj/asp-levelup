@@ -4,30 +4,11 @@ using ConsoleQueries.Queries;
 Repository repository = new Repository(new DataBaseContext());
 
 
-// var gtdSec = repository.GetSections();
-//
-// Category category = new Category();
-// category.Name = "qwerty";
-// category.Sections.Add(gtdSec[0]);
-// repository.InsertCategory(category);
-//
-//
-//
-//
-// var parent = repository.GetCategories().Where(p=>p.Name == category.Name).First();
-//
-// Category category2 = new Category();
-// category2.Name = "uiop";
-// category2.Sections.Add(gtdSec[0]);
-// category2.ParentCategoryId = parent.Id;
-// repository.InsertCategory(category2);
-//
-//
-
-
-var sections = repository.GetCategories();
-foreach (var a in sections)
+var products = repository.GetProducts();
+var ord = repository.CmplOrderByProd(products[0]);
+foreach (var item in ord)
 {
-    Console.WriteLine(a.Name);
-    Console.WriteLine(a.Sections);
+    Console.WriteLine(item.status);
+    Console.WriteLine(item.Price);
+    Console.WriteLine(item.User.Username+"\r");
 }

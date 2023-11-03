@@ -174,11 +174,14 @@ namespace ConsoleQueries.Models
             modelBuilder.Entity<Order>(entity =>
             {
                 entity.ToTable("order");
-
+                
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.AddressId).HasColumnName("address_id");
-
+                entity.Property(e => e.status)
+                    .HasConversion<int>();
+                    
+                
                 entity.Property(e => e.CreatedAt)
                     .HasColumnType("timestamp without time zone")
                     .HasColumnName("created_at");
@@ -448,6 +451,8 @@ namespace ConsoleQueries.Models
                 entity.Property(e => e.Username)
                     .HasMaxLength(30)
                     .HasColumnName("username");
+                entity.Property(e => e.type)
+                    .HasConversion<int>();
             });
 
             OnModelCreatingPartial(modelBuilder);

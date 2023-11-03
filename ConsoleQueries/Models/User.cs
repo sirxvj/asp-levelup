@@ -20,10 +20,18 @@ namespace ConsoleQueries.Models
         public string? Email { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
+        
+        public admin type { get; set; }
 
         public virtual ICollection<Address> Addresses { get; set; }
         public virtual ICollection<CartItem> CartItems { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
+    }
+
+    public enum admin:int
+    {
+        Customer=0,
+        Admin=1
     }
 }
