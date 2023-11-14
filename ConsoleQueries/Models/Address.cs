@@ -3,13 +3,8 @@ using System.Collections.Generic;
 
 namespace ConsoleQueries.Models
 {
-    public partial class Address
+    public class Address
     {
-        public Address()
-        {
-            Orders = new HashSet<Order>();
-        }
-
         public long Id { get; set; }
         public string? Address1 { get; set; }
         public string? City { get; set; }
@@ -17,6 +12,6 @@ namespace ConsoleQueries.Models
         public long? UserId { get; set; }
 
         public virtual User? User { get; set; }
-        public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
     }
 }

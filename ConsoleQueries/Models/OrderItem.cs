@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ConsoleQueries.Models
 {
-    public partial class OrderItem
+    public class OrderItem
     {
         public long ProductVariantId { get; set; }
         public long OrderId { get; set; }

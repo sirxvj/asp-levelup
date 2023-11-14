@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ConsoleQueries.Models
 {
-    public partial class CartItem
+    public class CartItem
     {
         public long ProductVariantId { get; set; }
         public long UserId { get; set; }

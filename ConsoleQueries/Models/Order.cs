@@ -5,11 +5,6 @@ namespace ConsoleQueries.Models
 {
     public partial class Order
     {
-        public Order()
-        {
-            OrderItems = new HashSet<OrderItem>();
-        }
-
         public long Id { get; set; }
         public long? UserId { get; set; }
         public int? Price { get; set; }
@@ -20,7 +15,7 @@ namespace ConsoleQueries.Models
         public virtual Address? Address { get; set; }
         public virtual User? User { get; set; }
         public virtual OrderTransaction? OrderTransaction { get; set; }
-        public virtual ICollection<OrderItem> OrderItems { get; set; }
+        public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 
     public enum Status:int

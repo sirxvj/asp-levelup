@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ConsoleQueries.Models
 {
-    public partial class ReviewsForProduct
+    public class ReviewsForProduct
     {
         public short? Rating { get; set; }
         public string? Comment { get; set; }

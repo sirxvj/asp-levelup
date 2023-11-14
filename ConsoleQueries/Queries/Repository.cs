@@ -12,33 +12,30 @@ public class Repository
         _dbContext = dbc;
     }
 
-    public List<Product> GetProsuctsByBrand(Brand brand)
+    public List<Product> GetProductsByBrand(Brand brand)
     {
         return _dbContext.Products
-            //.Include(p => p.Brand)
             .Where(p => p.Brand == brand)
             .ToList();
     }
 
-    public List<ProductVariant> GetPrVarByProduct(Product product)
+    public List<ProductVariant> GetProductVariantsByProduct(Product product)
     {
         return _dbContext.ProductVariants
             .Include(p => p.Product)
             .Include(p=>p.Color)
-            //.Include(p=>p.Size)
             .Where(p => p.Product == product)
             .ToList();
     }
 
-    public List<BrandNumber> GetBrandProdNum()
+    public Dictionary<Brand,int> GetBrandProdNum()
     {
-        var brands = _dbContext.Brands.ToList();
-        List<BrandNumber> result = new List<BrandNumber>();
-        foreach (var brand in brands)
+        var brands = _dbContext.Brands.Include(b => b.Products).ToList();
+        Dictionary<Brand, int> result = new Dictionary<Brand, int>();
+        foreach (var b in brands)
         {
-            result.Add(new BrandNumber(brand,_dbContext.Products.Where(p => p.Brand == brand).Count()));
+            result.Add(b,b.Products.Count);
         }
-
         return result;
     }
     public List<Product> GetProdForCategory(Category category,Section section)
@@ -52,8 +49,8 @@ public class Repository
     {
         return _dbContext.OrderItems
             .Include(o => o.Order)
+                .ThenInclude(o=>o.User)
             .Include(o => o.ProductVariant)
-            .Include(o=>o.Order.User)
             .Where(o => o.ProductVariant.Product == prod && o.Order.status==Status.Completed)
             .Select(o=>o.Order)
             .ToList();
@@ -72,52 +69,8 @@ public class Repository
         _dbContext.Entry(user).State = EntityState.Modified;
         _dbContext.SaveChanges();
     }
-    public void InsertBrand(Brand _brand)
-    {
-        _dbContext.Brands.Add(_brand);
-        _dbContext.SaveChanges();
-    }
-
-    public void InsertSection(Section sec)
-    {
-        _dbContext.Sections.Add(sec);
-        _dbContext.SaveChanges();
-    }
+   
     
-    public void InsertCategory(Category category)
-    {
-        _dbContext.Categories.Add(category);
-        _dbContext.SaveChanges();
-    }
-
-    public void InsertProduct(Product prod)
-    {
-        _dbContext.Products.Add(prod);
-        _dbContext.SaveChanges();
-    }
-
-    public void InsertProductVariant(ProductVariant pv)
-    {
-        _dbContext.ProductVariants.Add(pv);
-        _dbContext.SaveChanges();
-    }
-
-    public void InsertSize(Size size)
-    {
-        _dbContext.Sizes.Add(size);
-        _dbContext.SaveChanges();
-    }
-
-    public void InsertColor(Color color)
-    {
-        _dbContext.Colors.Add(color);
-        _dbContext.SaveChanges();
-    }
-
-    public List<Product> GetProducts()
-    {
-        return _dbContext.Products.ToList();
-    }
 
     public List<User> GetUsers()
     {

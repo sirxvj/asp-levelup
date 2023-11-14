@@ -1,11 +1,12 @@
-﻿using ConsoleQueries.Models;
+﻿
+using ConsoleQueries.Models;
 using ConsoleQueries.Queries;
 
 Repository repository = new Repository(new DataBaseContext());
 
 var brands = repository.GetBrands();
 
-var productsFirstBrand = repository.GetProsuctsByBrand(brands[0]);
+var productsFirstBrand = repository.GetProductsByBrand(brands[0]);
 
 foreach (var item in productsFirstBrand)
 {
@@ -14,7 +15,7 @@ foreach (var item in productsFirstBrand)
     var lazyBrand = item.Brand;
     Console.WriteLine(lazyBrand?.Name);
 }
-var pV = repository.GetPrVarByProduct(productsFirstBrand[0]);
+var pV = repository.GetProductVariantsByProduct(productsFirstBrand[0]);
 foreach (var item in pV)
 {
     Console.WriteLine(item.Color?.Name);
