@@ -91,7 +91,7 @@ public class Repository
             .Include(c => c.Sections)
             .ToListAsync();
     }
-
+    
     public async Task<List<Brand>> GetBrands()
     {
         return await _dbContext.Brands.ToListAsync();
