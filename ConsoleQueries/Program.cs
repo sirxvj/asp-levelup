@@ -1,12 +1,13 @@
 ﻿
+using ConsoleQueries.Data;
 using ConsoleQueries.Models;
 using ConsoleQueries.Queries;
 
 Repository repository = new Repository(new DataBaseContext());
 
-var brands = repository.GetBrands();
+var brands = repository.GetBrands().Result;
 
-var productsFirstBrand = repository.GetProductsByBrand(brands[0]);
+var productsFirstBrand = repository.GetProductsByBrand(brands[0]).Result;
 
 foreach (var item in productsFirstBrand)
 {
@@ -15,7 +16,7 @@ foreach (var item in productsFirstBrand)
     var lazyBrand = item.Brand;
     Console.WriteLine(lazyBrand?.Name);
 }
-var pV = repository.GetProductVariantsByProduct(productsFirstBrand[0]);
+var pV = repository.GetProductVariantsByProduct(productsFirstBrand[0]).Result;
 foreach (var item in pV)
 {
     Console.WriteLine(item.Color?.Name);
@@ -23,13 +24,13 @@ foreach (var item in pV)
     Console.WriteLine(lazySize?.Name);
 }
 
-var brandsWithProd = repository.GetBrandProdNum();
+var brandsWithProd = repository.GetBrandProdNum().Result;
 
-var sections = repository.GetSections();
-var categories = repository.GetCategories();
-var prodCategory = repository.GetProdForCategory(categories[0],sections[0]);
+var sections = repository.GetSections().Result;
+var categories = repository.GetCategories().Result;
+var prodCategory = repository.GetProdForCategory(categories[0],sections[0]).Result;
 
-var orders = repository.CmplOrderByProd(prodCategory[0]);
+var orders = repository.CmplOrderByProd(prodCategory[0]).Result;
 foreach (var item in orders)
 {
     Console.WriteLine(item.status);
@@ -39,7 +40,7 @@ foreach (var item in orders)
 }
 
 
-var reviews = repository.ReviewsByProd(prodCategory[0]);
+var reviews = repository.ReviewsByProd(prodCategory[0]).Result;
 foreach (var a in reviews)
 {
     Console.WriteLine(a.Titile);
@@ -49,8 +50,8 @@ foreach (var a in reviews)
 }
 
 
-User user = repository.GetUsers()[0];
+User user = repository.GetUsers().Result[0];
 Console.WriteLine(user.Username);
 long id = user.Id;
-repository.UpdateUserName(user,"niggative");
-Console.WriteLine(repository.GetUserById(id)?.Username);
+await repository.UpdateUserName(user,"niggative");
+Console.WriteLine(repository.GetUserById(id).Result?.Username);
