@@ -14,7 +14,7 @@ public class BrandController : Controller
         _dbcontext = dbc;
     }
     [HttpGet]
-    public async Task<string>/*async Task<List<Brand>>*/ Index() //GetBrands
+    public async Task<string> Brands() 
     {
         string res = "";
         var brands = await _dbcontext.Brands.ToListAsync();
@@ -25,44 +25,43 @@ public class BrandController : Controller
         return res;
     }
     [HttpPut]
-    public async Task<IActionResult> PutBrand(int id, string name)
+    public async Task<IActionResult> PutBrand([FromQuery(Name = "id")] int id, [FromQuery(Name="name")]string name)
     {
         var item = await _dbcontext.Brands.FirstOrDefaultAsync(b => b.Id == id);
-        if (!(item is null))
+        if (item is not null)
         {
             item.Name = name;
         }
-
         if (!ModelState.IsValid)
         {
-            return StatusCode(400);
+            return BadRequest();
         }
         await _dbcontext.SaveChangesAsync();
-        return StatusCode(200);
+        return Ok();
     }
     [HttpGet("/brand/brandbyid/{id?}")]
-    public async Task<string> BrandById(int id)
+    public async Task<string> BrandById([FromQuery(Name = "id")] int id)
     {
         Brand? brand = await _dbcontext.Brands.FirstOrDefaultAsync(b => b.Id == id);
         return brand.Id + " " + brand.Name;
     }
 
     [HttpPost]
-    public async Task<IActionResult> NewBrand(string name)
+    public async Task<IActionResult> NewBrand([FromQuery(Name = "name")]string name)
     {
         Brand newbrand = new Brand();
         newbrand.Name = name;
         if (!ModelState.IsValid)
         {
-            return StatusCode(400);
+            return BadRequest();
         }
         await _dbcontext.AddAsync(newbrand);
         await _dbcontext.SaveChangesAsync();
-        return StatusCode(200);
+        return Ok();
     }
 
     [HttpDelete]
-    public async Task DeleteBrand(int id)
+    public async Task DeleteBrand([FromQuery(Name = "id")]int id)
     {
         var brand = await _dbcontext.Brands.FirstOrDefaultAsync(b => b.Id == id);
         if(!(brand is null))_dbcontext.Brands.Remove(brand);

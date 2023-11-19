@@ -12,13 +12,7 @@ public class CartItemConfiguration:IEntityTypeConfiguration<CartItem>
             .HasName("cart_items_pkey");
 
         builder.ToTable("cart_items");
-
-        builder.Property(e => e.ProductVariantId).HasColumnName("product_variant_id");
-
-        builder.Property(e => e.UserId).HasColumnName("user_id");
-
-        builder.Property(e => e.Quantity).HasColumnName("quantity");
-
+        
         builder.HasOne(d => d.ProductVariant)
             .WithMany(p => p.CartItems)
             .HasForeignKey(d => d.ProductVariantId)

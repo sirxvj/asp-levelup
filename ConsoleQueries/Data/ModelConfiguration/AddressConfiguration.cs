@@ -9,9 +9,7 @@ public class AddressConfiguration : IEntityTypeConfiguration<Address>
     public void Configure(EntityTypeBuilder<Address> builder)
     {
         builder.ToTable("address");
-
-        builder.Property(e => e.Id).HasColumnName("id");
-
+        
         builder.Property(e => e.Address1)
             .HasMaxLength(50)
             .HasColumnName("address");

@@ -8,23 +8,19 @@ public class OrderTransactionConfiguration:IEntityTypeConfiguration<OrderTransac
 {
     public void Configure(EntityTypeBuilder<OrderTransaction> builder)
     {
-        builder.HasKey(e => e.OrderId)
-            .HasName("order_transactions_pkey");
+        builder.HasKey(e => e.OrderId);
 
         builder.ToTable("order_transactions");
 
         builder.Property(e => e.OrderId)
-            .ValueGeneratedNever()
-            .HasColumnName("order_id");
+            .ValueGeneratedNever();
 
         builder.Property(e => e.UpdatedAt)
-            .HasColumnType("timestamp without time zone")
-            .HasColumnName("updated_at");
+            .HasColumnType("timestamp without time zone");
 
         builder.HasOne(d => d.Order)
             .WithOne(p => p.OrderTransaction)
             .HasForeignKey<OrderTransaction>(d => d.OrderId)
-            .OnDelete(DeleteBehavior.ClientSetNull)
-            .HasConstraintName("order_idс");
+            .OnDelete(DeleteBehavior.ClientSetNull);
     }
 }

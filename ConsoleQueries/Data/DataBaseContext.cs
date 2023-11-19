@@ -27,7 +27,6 @@ namespace ConsoleQueries.Data
         public virtual DbSet<Product> Products { get; set; } = null!;
         public virtual DbSet<ProductVariant> ProductVariants { get; set; } = null!;
         public virtual DbSet<Review> Reviews { get; set; } = null!;
-        //public virtual DbSet<ReviewsForProduct> ReviewsForProducts { get; set; } = null!;
         public virtual DbSet<Section> Sections { get; set; } = null!;
         public virtual DbSet<Size> Sizes { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
@@ -37,15 +36,15 @@ namespace ConsoleQueries.Data
             if (!optionsBuilder.IsConfigured)
             { 
                 optionsBuilder
-                    .UseLazyLoadingProxies()
-                    .UseNpgsql("Server=localhost;Port=5432;Database=postgres;User Id=postgres;Password=rbtree");
+                    .UseLazyLoadingProxies();
+                    //.UseNpgsql();
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasPostgresEnum("status", new[] { "InReview", "InDelivery", "Completed" })
-                .HasPostgresEnum("user_type", new[] { "ADMIN", "CUSTOMER" });
+            modelBuilder.HasPostgresEnum<Status>().HasPostgresEnum<UserType>(); //HasPostgresEnum("status", new[] { "InReview", "InDelivery", "Completed" })
+                //.HasPostgresEnum("user_type", new[] { "ADMIN", "CUSTOMER" });
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             

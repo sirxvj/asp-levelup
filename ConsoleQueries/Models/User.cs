@@ -12,14 +12,14 @@ namespace ConsoleQueries.Models
         public string? Email { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public admin type { get; set; }
+        public UserType type { get; set; }
         public virtual ICollection<Address> Addresses { get; set; } = new List<Address>();
         public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
         public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
         public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
 
-    public enum admin:int
+    public enum UserType:int
     {
         Customer=0,
         Admin=1

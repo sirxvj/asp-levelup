@@ -13,10 +13,7 @@ public class SizeConfiguration:IEntityTypeConfiguration<Size>
         builder.HasIndex(e => e.Name, "names")
             .IsUnique();
 
-        builder.Property(e => e.Id).HasColumnName("id");
-
         builder.Property(e => e.Name)
-            .HasMaxLength(50)
-            .HasColumnName("name");
+            .HasMaxLength(50);
     }
 }

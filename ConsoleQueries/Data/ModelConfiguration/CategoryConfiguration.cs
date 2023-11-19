@@ -16,14 +16,10 @@ public class CategoryConfiguration:IEntityTypeConfiguration<Category>
         builder.Property(e => e.Id).HasColumnName("id");
 
         builder.Property(e => e.Name)
-            .HasMaxLength(40)
-            .HasColumnName("name");
-
-        builder.Property(e => e.ParentCategoryId).HasColumnName("parent_category_id");
-
-        builder.HasOne(d => d.ParentCategory)
+            .HasMaxLength(40);
+        
+         builder.HasOne(d => d.ParentCategory)
             .WithMany(p => p.InverseParentCategory)
-            .HasForeignKey(d => d.ParentCategoryId)
-            .HasConstraintName("parent_category_idс");
+            .HasForeignKey(d => d.ParentCategoryId);
     }
 }

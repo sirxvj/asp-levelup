@@ -13,28 +13,16 @@ public class ProductConfiguration:IEntityTypeConfiguration<Product>
         builder.HasIndex(e => e.Name, "namep")
             .IsUnique();
 
-        builder.Property(e => e.Id).HasColumnName("id");
-
-        builder.Property(e => e.AverageRating).HasColumnName("average_rating");
-
-        builder.Property(e => e.BrandId).HasColumnName("brand_id");
-
-        builder.Property(e => e.CategoryId).HasColumnName("category_id");
-
         builder.Property(e => e.Name)
-            .HasMaxLength(50)
-            .HasColumnName("name");
+            .HasMaxLength(50);
 
-        builder.Property(e => e.Price).HasColumnName("price");
 
         builder.HasOne(d => d.Brand)
             .WithMany(p => p.Products)
-            .HasForeignKey(d => d.BrandId)
-            .HasConstraintName("brand_idс");
+            .HasForeignKey(d => d.BrandId);
 
         builder.HasOne(d => d.Category)
             .WithMany(p => p.Products)
-            .HasForeignKey(d => d.CategoryId)
-            .HasConstraintName("category_idс");
+            .HasForeignKey(d => d.CategoryId);
     }
 }

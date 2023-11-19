@@ -16,31 +16,25 @@ public class UserConfiguration:IEntityTypeConfiguration<User>
         builder.HasIndex(e => e.Phone, "phoneс")
             .IsUnique();
 
-        builder.Property(e => e.Id).HasColumnName("id");
+        builder.Property(e => e.Id);
 
         builder.Property(e => e.Email)
-            .HasMaxLength(30)
-            .HasColumnName("email");
+            .HasMaxLength(30);
 
         builder.Property(e => e.FirstName)
-            .HasMaxLength(30)
-            .HasColumnName("first_name");
+            .HasMaxLength(30);
 
         builder.Property(e => e.LastName)
-            .HasMaxLength(30)
-            .HasColumnName("last_name");
+            .HasMaxLength(30);
 
         builder.Property(e => e.Password)
-            .HasMaxLength(50)
-            .HasColumnName("password");
+            .HasMaxLength(50);
 
         builder.Property(e => e.Phone)
-            .HasMaxLength(20)
-            .HasColumnName("phone");
+            .HasMaxLength(20);
 
         builder.Property(e => e.Username)
-            .HasMaxLength(30)
-            .HasColumnName("username");
+            .HasMaxLength(30);
         builder.Property(e => e.type)
             .HasConversion<int>();
     }

@@ -11,22 +11,14 @@ public class MediaConfiguration:IEntityTypeConfiguration<Media>
         builder.ToTable("media");
 
         builder.Property(e => e.Id).HasColumnName("id");
-
-        builder.Property(e => e.Bytes).HasColumnName("bytes");
-
         builder.Property(e => e.FileName)
-            .HasMaxLength(50)
-            .HasColumnName("file_name");
+            .HasMaxLength(50);
 
         builder.Property(e => e.FileType)
-            .HasMaxLength(50)
-            .HasColumnName("file_type");
-
-        builder.Property(e => e.ProductId).HasColumnName("product_id");
+            .HasMaxLength(50);
 
         builder.HasOne(d => d.Product)
             .WithMany(p => p.Media)
-            .HasForeignKey(d => d.ProductId)
-            .HasConstraintName("media_product_id_fkey");
+            .HasForeignKey(d => d.ProductId);
     }
 }
