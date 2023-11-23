@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace ConsoleQueries.Models
 {
-    public partial class Brand
+    public class Brand
     {
-        public Brand()
-        {
-            Products = new HashSet<Product>();
-        }
-
         public int Id { get; set; }
-        public string? Name { get; set; }
+        
+        [Required]
+        [StringLength(50)]
+        public string Name { get; set; }
 
-        public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }

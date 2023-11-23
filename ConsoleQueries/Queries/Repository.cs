@@ -1,3 +1,4 @@
+using ConsoleQueries.Data;
 using ConsoleQueries.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,137 +13,88 @@ public class Repository
         _dbContext = dbc;
     }
 
-    public List<Product> GetProsuctsByBrand(Brand brand)
+    public async Task<List<Product>> GetProductsByBrand(Brand brand)
     {
-        return _dbContext.Products
-            //.Include(p => p.Brand)
+        return await _dbContext.Products
             .Where(p => p.Brand == brand)
-            .ToList();
+            .ToListAsync();
     }
 
-    public List<ProductVariant> GetPrVarByProduct(Product product)
+    public async Task<List<ProductVariant>> GetProductVariantsByProduct(Product product)
     {
-        return _dbContext.ProductVariants
+        return await _dbContext.ProductVariants
             .Include(p => p.Product)
             .Include(p=>p.Color)
-            //.Include(p=>p.Size)
             .Where(p => p.Product == product)
-            .ToList();
+            .ToListAsync();
     }
 
-    public List<BrandNumber> GetBrandProdNum()
+    public async Task<Dictionary<Brand,int>> GetBrandProdNum()
     {
-        var brands = _dbContext.Brands.ToList();
-        List<BrandNumber> result = new List<BrandNumber>();
-        foreach (var brand in brands)
-        {
-            result.Add(new BrandNumber(brand,_dbContext.Products.Where(p => p.Brand == brand).Count()));
-        }
-
+        Dictionary<Brand, int> result = new Dictionary<Brand, int>();
+        await _dbContext.Brands.Include(b => b.Products).ForEachAsync(
+            b => result.Add(b, b.Products.Count)
+        );
         return result;
     }
-    public List<Product> GetProdForCategory(Category category,Section section)
+    public async Task<List<Product>> GetProdForCategory(Category category,Section section)
     {
-        return _dbContext.Products
+        return await _dbContext.Products
             .Include(p => p.Category)
-            .Where(p => p.Category == category && p.Category.Sections.Contains(section)).ToList();
+            .Where(p => p.Category == category && p.Category.Sections.Contains(section)).ToListAsync();
     }
 
-    public List<Order> CmplOrderByProd(Product prod)
+    public async Task<List<Order>> CmplOrderByProd(Product prod)
     {
-        return _dbContext.OrderItems
+        return await _dbContext.OrderItems
             .Include(o => o.Order)
+                .ThenInclude(o=>o.User)
             .Include(o => o.ProductVariant)
-            .Include(o=>o.Order.User)
             .Where(o => o.ProductVariant.Product == prod && o.Order.status==Status.Completed)
             .Select(o=>o.Order)
-            .ToList();
+            .ToListAsync();
     }
 
-    public List<Review> ReviewsByProd(Product prod)
+    public async Task<List<Review>> ReviewsByProd(Product prod)
     {
-        return _dbContext.Reviews.Where(r => r.Product == prod).ToList();
+        return await _dbContext.Reviews.Where(r => r.Product == prod).ToListAsync();
     }
 
-    public void UpdateUserName(User user, string username)
+    public async Task UpdateUserName(User user, string username)
     {
         _dbContext.Entry(user).State = EntityState.Detached;
         user.Username = username;
         _dbContext.Attach(user);
         _dbContext.Entry(user).State = EntityState.Modified;
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
     }
-    public void InsertBrand(Brand _brand)
+   
+    
+
+    public async Task<List<User>> GetUsers()
     {
-        _dbContext.Brands.Add(_brand);
-        _dbContext.SaveChanges();
+        return await _dbContext.Users.ToListAsync();
     }
 
-    public void InsertSection(Section sec)
+    public async Task<User?> GetUserById(long id)
     {
-        _dbContext.Sections.Add(sec);
-        _dbContext.SaveChanges();
+        return await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+    }
+    public async Task<List<Section>> GetSections()
+    {
+        return await _dbContext.Sections.ToListAsync();
+    }
+
+    public async Task<List<Category>> GetCategories()
+    {
+        return await _dbContext.Categories
+            .Include(c => c.Sections)
+            .ToListAsync();
     }
     
-    public void InsertCategory(Category category)
+    public async Task<List<Brand>> GetBrands()
     {
-        _dbContext.Categories.Add(category);
-        _dbContext.SaveChanges();
-    }
-
-    public void InsertProduct(Product prod)
-    {
-        _dbContext.Products.Add(prod);
-        _dbContext.SaveChanges();
-    }
-
-    public void InsertProductVariant(ProductVariant pv)
-    {
-        _dbContext.ProductVariants.Add(pv);
-        _dbContext.SaveChanges();
-    }
-
-    public void InsertSize(Size size)
-    {
-        _dbContext.Sizes.Add(size);
-        _dbContext.SaveChanges();
-    }
-
-    public void InsertColor(Color color)
-    {
-        _dbContext.Colors.Add(color);
-        _dbContext.SaveChanges();
-    }
-
-    public List<Product> GetProducts()
-    {
-        return _dbContext.Products.ToList();
-    }
-
-    public List<User> GetUsers()
-    {
-        return _dbContext.Users.ToList();
-    }
-
-    public User? GetUserById(long id)
-    {
-        return _dbContext.Users.FirstOrDefault(u => u.Id == id);
-    }
-    public List<Section> GetSections()
-    {
-        return _dbContext.Sections.ToList();
-    }
-
-    public List<Category> GetCategories()
-    {
-        return _dbContext.Categories
-            .Include(c => c.Sections)
-            .ToList();
-    }
-
-    public List<Brand> GetBrands()
-    {
-        return _dbContext.Brands.ToList();
+        return await _dbContext.Brands.ToListAsync();
     }
     
 }
