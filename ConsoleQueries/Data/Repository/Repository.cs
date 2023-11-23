@@ -1,8 +1,7 @@
-using ConsoleQueries.Data;
 using ConsoleQueries.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ConsoleQueries.Queries;
+namespace ConsoleQueries.Data.Repository;
 
 public class Repository
 {

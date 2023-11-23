@@ -7,6 +7,8 @@ namespace ConsoleQueries.Models
     {
         public long OrderId { get; set; }
         public DateTime? UpdatedAt { get; set; }
+        
+        public Status status { get; set; }
 
         public virtual Order Order { get; set; } = null!;
     }
