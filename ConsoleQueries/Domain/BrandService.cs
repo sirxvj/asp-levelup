@@ -1,37 +1,49 @@
+using ConsoleQueries.Data;
 using ConsoleQueries.Data.Repository;
 using ConsoleQueries.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConsoleQueries.Domain;
 
 public class BrandService:IBrandService
 {
-    private readonly IBrandRepository _repository;
-    public BrandService(IBrandRepository repo)
+    private DataBaseContext _dataBase;
+    public BrandService(DataBaseContext dbc)
     {
-        _repository = repo;
+        _dataBase = dbc;
     }
-    public Task<IEnumerable<Brand>> GetBrands()
+    public async Task<IEnumerable<Brand>> GetBrands()
     {
-        return _repository.GetBrands();
-    }
-
-    public Task PutBrand(int id, string name)
-    {
-        return _repository.PutBrand(id, name);
+        return await _dataBase.Brands.ToListAsync();
     }
 
-    public Task<Brand?> GetBrandById(int id)
+    public async Task PutBrand(int id, string name)
     {
-        return _repository.GetBrandById(id);
+        var item = await _dataBase.Brands.FirstOrDefaultAsync(b => b.Id == id);
+        if (item is not null)
+        {
+            item.Name = name;
+        }
+        await _dataBase.SaveChangesAsync();
     }
 
-    public Task AddBrand(string name)
+    public async Task<Brand?> GetBrandById(int id)
     {
-        return _repository.AddBrand(name);
+        return await _dataBase.Brands.FirstOrDefaultAsync(b => b.Id == id);
     }
 
-    public Task DeleteBrand(int id)
+    public async Task AddBrand(string name)
     {
-        return _repository.DeleteBrand(id);
+        Brand newbrand = new Brand();
+        newbrand.Name = name;
+        await _dataBase.AddAsync(newbrand);
+        await _dataBase.SaveChangesAsync();
+    }
+
+    public async Task DeleteBrand(int id)
+    {
+        var brand = await _dataBase.Brands.FirstOrDefaultAsync(b => b.Id == id);
+        if(brand is not null)_dataBase.Brands.Remove(brand);
+        await _dataBase.SaveChangesAsync();
     }
 }

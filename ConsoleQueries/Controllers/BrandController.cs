@@ -14,7 +14,7 @@ public class BrandController : Controller
     {
         _brandService = bs;
     }
-    [HttpGet]
+    [HttpGet("/brand/brands")]
     public async Task<string> Brands() 
     {
         string res = "";
@@ -25,8 +25,8 @@ public class BrandController : Controller
         }
         return res;
     }
-    [HttpPut]
-    public async Task<IActionResult> PutBrand([FromQuery(Name = "id")] int id, [FromQuery(Name="name")]string name)
+    [HttpPut("/brand/putbrand/{id}")]
+    public async Task<IActionResult> PutBrand([FromRoute] int id, [FromQuery(Name="name")]string name)
     {
         await _brandService.PutBrand(id, name);
         if (!ModelState.IsValid)
@@ -42,7 +42,7 @@ public class BrandController : Controller
         return brand is null ?"null":brand.Id + " " + brand.Name;
     }
 
-    [HttpPost]
+    [HttpPost("brand/newbrand")]
     public async Task<IActionResult> NewBrand([FromQuery(Name = "name")]string name)
     {
         await _brandService.AddBrand(name);
@@ -53,7 +53,7 @@ public class BrandController : Controller
         return Ok();
     }
 
-    [HttpDelete]
+    [HttpDelete("/brand/deletebrand")]
     public async Task DeleteBrand([FromQuery(Name = "id")]int id)
     {
         await _brandService.DeleteBrand(id);

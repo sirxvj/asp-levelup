@@ -15,7 +15,6 @@ IConfigurationRoot configuration = new ConfigurationBuilder()
 builder.Services.AddControllers();
 builder.Services.AddDbContext<DataBaseContext>(options => options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddSingleton<IBrandService,BrandService>();
-builder.Services.AddSingleton<IBrandRepository, BrandRepositoryImpl>();
 var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
@@ -23,18 +22,20 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Brand}/{action=Index}/{id?}");
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Brand}/{action=PutBrand}/{id?}/{name?}");
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Brand}/{action=NewBrand}/{name?}");
+// app.MapControllerRoute(
+//     name: "default",
+//     pattern: "{controller=Brand}/{action=Index}/{id?}");
+// app.MapControllerRoute(
+//     name: "default",
+//     pattern: "{controller=Brand}/{action=PutBrand}/{id?}/{name?}");
+// app.MapControllerRoute(
+//     name: "default",
+//     pattern: "{controller=Brand}/{action=NewBrand}/{name?}");
+app.MapControllers();
 
 app.Run();
