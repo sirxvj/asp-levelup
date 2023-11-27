@@ -12,6 +12,9 @@ public class OrderTransactionConfiguration:IEntityTypeConfiguration<OrderTransac
 
         builder.ToTable("order_transactions");
 
+        builder.Property(e => e.status)
+            .HasConversion<int>();
+        
         builder.Property(e => e.OrderId)
             .ValueGeneratedNever();
 

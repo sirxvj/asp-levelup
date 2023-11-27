@@ -234,6 +234,9 @@ namespace ConsoleQueries.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<int>("status")
+                        .HasColumnType("integer");
+
                     b.HasKey("OrderId");
 
                     b.ToTable("order_transactions", (string)null);

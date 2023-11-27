@@ -1,4 +1,5 @@
 ﻿using ConsoleQueries.Data;
+using ConsoleQueries.Domain;
 using ConsoleQueries.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,64 +8,54 @@ namespace ConsoleQueries.Controllers;
 
 public class BrandController : Controller
 {
-    private readonly DataBaseContext _dbcontext;
+    private readonly IBrandService _brandService;
 
-    public BrandController(DataBaseContext dbc)
+    public BrandController(IBrandService bs)
     {
-        _dbcontext = dbc;
+        _brandService = bs;
     }
-    [HttpGet]
+    [HttpGet("/brand/brands")]
     public async Task<string> Brands() 
     {
         string res = "";
-        var brands = await _dbcontext.Brands.ToListAsync();
+        var brands =  _brandService.GetBrands().Result;
         foreach (var b in brands)
         {
             res += b.Id + " " + b.Name + "\n";
         }
         return res;
     }
-    [HttpPut]
-    public async Task<IActionResult> PutBrand([FromQuery(Name = "id")] int id, [FromQuery(Name="name")]string name)
+    [HttpPut("/brand/putbrand/{id}")]
+    public async Task<IActionResult> PutBrand([FromRoute] int id, [FromQuery(Name="name")]string name)
     {
-        var item = await _dbcontext.Brands.FirstOrDefaultAsync(b => b.Id == id);
-        if (item is not null)
-        {
-            item.Name = name;
-        }
+        await _brandService.PutBrand(id, name);
         if (!ModelState.IsValid)
         {
             return BadRequest();
         }
-        await _dbcontext.SaveChangesAsync();
         return Ok();
     }
     [HttpGet("/brand/brandbyid/{id?}")]
     public async Task<string> BrandById([FromQuery(Name = "id")] int id)
     {
-        Brand? brand = await _dbcontext.Brands.FirstOrDefaultAsync(b => b.Id == id);
-        return brand.Id + " " + brand.Name;
+        Brand? brand = await _brandService.GetBrandById(id);
+        return brand is null ?"null":brand.Id + " " + brand.Name;
     }
 
-    [HttpPost]
+    [HttpPost("brand/newbrand")]
     public async Task<IActionResult> NewBrand([FromQuery(Name = "name")]string name)
     {
-        Brand newbrand = new Brand();
-        newbrand.Name = name;
+        await _brandService.AddBrand(name);
         if (!ModelState.IsValid)
         {
             return BadRequest();
         }
-        await _dbcontext.AddAsync(newbrand);
-        await _dbcontext.SaveChangesAsync();
         return Ok();
     }
 
-    [HttpDelete]
+    [HttpDelete("/brand/deletebrand")]
     public async Task DeleteBrand([FromQuery(Name = "id")]int id)
     {
-        var brand = await _dbcontext.Brands.FirstOrDefaultAsync(b => b.Id == id);
-        if(!(brand is null))_dbcontext.Brands.Remove(brand);
-        await _dbcontext.SaveChangesAsync();
+        await _brandService.DeleteBrand(id);
     }
 }
