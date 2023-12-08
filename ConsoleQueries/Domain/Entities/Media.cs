@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ConsoleQueries.Models
+﻿namespace ConsoleQueries.Domain.Entities
 {
     public class Media
     {
@@ -13,4 +10,5 @@ namespace ConsoleQueries.Models
 
         public virtual Product? Product { get; set; }
     }
+    
 }

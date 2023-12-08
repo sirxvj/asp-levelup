@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ConsoleQueries.Domain.Entities;
 
 namespace ConsoleQueries.Models
 {

@@ -1,3 +1,5 @@
+using ConsoleQueries.Data.DataBase;
+using ConsoleQueries.Domain.Entities;
 using ConsoleQueries.Models;
 using Microsoft.EntityFrameworkCore;
 

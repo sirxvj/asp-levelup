@@ -1,3 +1,4 @@
+using ConsoleQueries.Domain.Entities;
 using ConsoleQueries.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

@@ -1,5 +1,8 @@
 using ConsoleQueries.Data;
+using ConsoleQueries.Data.DataBase;
 using ConsoleQueries.Data.Repository;
+using ConsoleQueries.Domain.Entities;
+using ConsoleQueries.Domain.ServiceInterfaces;
 using ConsoleQueries.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,11 +35,9 @@ public class BrandService:IBrandService
         return await _dataBase.Brands.FirstOrDefaultAsync(b => b.Id == id);
     }
 
-    public async Task AddBrand(string name)
+    public async Task AddBrand(Brand brand)
     {
-        Brand newbrand = new Brand();
-        newbrand.Name = name;
-        await _dataBase.AddAsync(newbrand);
+        await _dataBase.AddAsync(brand);
         await _dataBase.SaveChangesAsync();
     }
 
