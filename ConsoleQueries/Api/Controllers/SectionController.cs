@@ -1,4 +1,5 @@
 using ConsoleQueries.Api.DTOs;
+using ConsoleQueries.Application.ServiceInterfaces;
 using ConsoleQueries.Domain.Entities;
 using ConsoleQueries.Domain.ServiceInterfaces;
 using Mapster;
@@ -41,13 +42,13 @@ public class SectionController:ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> NewSection([FromBody]Section section)
+    public async Task<ActionResult> NewSection([FromBody]SectionDto section)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest();
         }
-        await _sectionService.NewSection(section);
+        await _sectionService.AddSection(section);
         return Ok();
     }
     

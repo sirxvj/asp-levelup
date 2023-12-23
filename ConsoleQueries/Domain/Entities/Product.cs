@@ -17,16 +17,4 @@ namespace ConsoleQueries.Domain.Entities
         public virtual ICollection<ProductVariant> ProductVariants { get; set; } = new List<ProductVariant>();
         public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
-    public class ProductValidator : AbstractValidator<Product>
-    {
-        public ProductValidator()
-        {
-            RuleFor(x => x.Name).NotNull().NotEmpty();
-            RuleFor(x => x.BrandId).NotNull().NotEmpty();
-            RuleFor(x => x.CategoryId).NotNull().NotEmpty();
-            RuleFor(x => x.Name).Length(2, 50);
-            RuleFor(x => x.Price).GreaterThan(0);
-            RuleFor(x => x.AverageRating).InclusiveBetween((short)0,(short)50);
-        }
-    }
 }

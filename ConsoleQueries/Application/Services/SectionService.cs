@@ -1,10 +1,11 @@
-using ConsoleQueries.Data;
+using ConsoleQueries.Api.DTOs;
+using ConsoleQueries.Application.ServiceInterfaces;
 using ConsoleQueries.Data.DataBase;
 using ConsoleQueries.Domain.Entities;
-using ConsoleQueries.Domain.ServiceInterfaces;
+using Mapster;
 using Microsoft.EntityFrameworkCore;
 
-namespace ConsoleQueries.Domain.Services;
+namespace ConsoleQueries.Application.Services;
 
 public class SectionService:ISectionService
 {
@@ -14,19 +15,24 @@ public class SectionService:ISectionService
     {
         _dataBase = dbc;
     }
-    public async Task<IEnumerable<Section>> GetSections()
+    public async Task<IEnumerable<SectionDto>> GetSections()
     {
-        return await _dataBase.Sections.ToListAsync();
+        return (await _dataBase.Sections
+            .ToListAsync())
+            .Adapt<IEnumerable<SectionDto>>();
     }
 
-    public async Task<Section> GetSectionById(int id)
+    public async Task<SectionDto> GetSectionById(int id)
     {
-        return await _dataBase.Sections.Where(s => s.Id==id).FirstAsync();
+        return (await _dataBase.Sections
+            .Where(s => s.Id==id)
+            .FirstAsync())
+            .Adapt<SectionDto>();
     }
 
-    public async Task NewSection(Section section)
+    public async Task AddSection(SectionDto section)
     {
-        await _dataBase.AddAsync(section);
+        _dataBase.Add(section);
         await _dataBase.SaveChangesAsync();
     }
 

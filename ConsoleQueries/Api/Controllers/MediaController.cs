@@ -16,20 +16,20 @@ public class MediaController:ControllerBase
         _mediaService = mediaService;
     }
 
-    [HttpGet("product/{pId}")]
-    public async Task<ActionResult<IEnumerable<Media>>> GetProductImages([FromRoute] int pId)
+    [HttpGet("product/{productId}")]
+    public async Task<ActionResult<IEnumerable<Media>>> GetProductImages([FromRoute] int productId)
     {
-        var imgs = await _mediaService.GetImagesByProduct(pId);
+        var imgs = await _mediaService.GetImagesByProduct(productId);
         return Ok(imgs);
     }
     
-    [HttpPost("product/{pId}")]
-    public async Task<IActionResult> PostImageAsync([FromRoute]int pId,[FromQuery(Name = "fileName")]string fileName,[FromQuery(Name="fileType")]string fileType) {
+    [HttpPost("product/{productId}")]
+    public async Task<IActionResult> PostImageAsync([FromRoute]int productId,[FromQuery(Name = "fileName")]string fileName,[FromQuery(Name="fileType")]string fileType) {
         using var buffer = new System.IO.MemoryStream();
         await this.Request.Body.CopyToAsync(buffer, this.Request.HttpContext.RequestAborted);
         var imageBytes = buffer.ToArray();
         Media image = new Media();
-        image.ProductId = pId;
+        image.ProductId = productId;
         image.Bytes = imageBytes;
         image.FileName = fileName;
         image.FileType = fileType;

@@ -12,14 +12,5 @@ namespace ConsoleQueries.Domain.Entities
 
         public virtual ICollection<Product> Products { get; set; } = new List<Product>();
     }
-
-    public class BrandValidator : AbstractValidator<Brand>
-    {
-        public BrandValidator()
-        {
-            RuleFor(x => x.Name).NotNull().NotEmpty();
-            RuleFor(x => x.Name).Length(2, 50);
-        }
-    }
 }
 

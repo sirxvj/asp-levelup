@@ -1,3 +1,4 @@
+using ConsoleQueries.Domain.Entities;
 using ConsoleQueries.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -12,7 +13,7 @@ public class OrderTransactionConfiguration:IEntityTypeConfiguration<OrderTransac
 
         builder.ToTable("order_transactions");
 
-        builder.Property(e => e.status)
+        builder.Property(e => e.Status)
             .HasConversion<int>();
         
         builder.Property(e => e.OrderId)

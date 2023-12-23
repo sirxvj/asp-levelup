@@ -3,7 +3,7 @@ using ConsoleQueries.Domain.Entities;
 using ConsoleQueries.Domain.ServiceInterfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace ConsoleQueries.Domain.Services;
+namespace ConsoleQueries.Application.Services;
 
 public class MediaService:IMediaService
 {
@@ -16,20 +16,18 @@ public class MediaService:IMediaService
 
     public async Task<IEnumerable<Media>> GetImagesByProduct(int prodId)
     {
-        var img = await _dbc.Media.Where(m => m.ProductId == prodId).ToListAsync();
-        return img;
+        return await _dbc.Media.Where(m => m.ProductId == prodId).ToListAsync();
     }
 
     public async Task AddImages(Media media)
     {
-        await _dbc.Media.AddAsync(media);
+        _dbc.Media.Add(media);
         await _dbc.SaveChangesAsync();
     }
 
     public async Task DeleteImage(int id)
     {
-        var img = await _dbc.Media.Where(m => m.Id == id).FirstAsync();
-        _dbc.Media.Remove(img);
+        _dbc.Media.Remove(await _dbc.Media.Where(m => m.Id == id).FirstAsync());
         await _dbc.SaveChangesAsync();
     }
 }

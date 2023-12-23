@@ -51,7 +51,7 @@ public class Repository
             .Include(o => o.Order)
                 .ThenInclude(o=>o.User)
             .Include(o => o.ProductVariant)
-            .Where(o => o.ProductVariant.Product == prod && o.Order.status==Status.Completed)
+            .Where(o => o.ProductVariant.Product == prod && o.Order.Status==Status.Completed)
             .Select(o=>o.Order)
             .ToListAsync();
     }

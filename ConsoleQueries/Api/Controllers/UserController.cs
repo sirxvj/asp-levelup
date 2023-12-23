@@ -1,4 +1,6 @@
 using ConsoleQueries.Api.DTOs;
+using ConsoleQueries.Application.ServiceInterfaces;
+using ConsoleQueries.Domain.Entities;
 using ConsoleQueries.Domain.ServiceInterfaces;
 using ConsoleQueries.Models;
 using Mapster;
@@ -22,12 +24,11 @@ public class UserController:ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<UserDto>> GetById([FromRoute] int id)
     {
-        var user = await _userService.GetUserById(id);
-        return Ok(user.Adapt<UserDto>());
+        return Ok(await _userService.GetUserById(id));
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateUser([FromRoute]int id,[FromBody]User newUser)
+    public async Task<ActionResult> UpdateUser([FromRoute]int id,[FromBody]UserDto newUser)
     {
         if (!ModelState.IsValid)
         {
@@ -38,7 +39,7 @@ public class UserController:ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddUser([FromBody] User user)
+    public async Task<ActionResult> AddUser([FromBody] UserDto user)
     {
         if (!ModelState.IsValid)
         {

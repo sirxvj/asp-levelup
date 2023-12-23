@@ -1,4 +1,5 @@
 using ConsoleQueries.Api.DTOs;
+using ConsoleQueries.Application.ServiceInterfaces;
 using ConsoleQueries.Data.DataBase;
 using ConsoleQueries.Domain.Entities;
 using ConsoleQueries.Domain.ServiceInterfaces;
@@ -22,20 +23,19 @@ public class CategoryController:ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CategoryDto>>> GetAll()
     {
-        var result = await _categoryService.GetAll();
-        return Ok(result.Adapt<IEnumerable<CategoryDto>>());
+        return Ok(await _categoryService.GetAll());
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<CategoryDto>> GetById([FromRoute]int id)
     {
-        return Ok((await _categoryService.GetById(id)).Adapt<CategoryDto>());
+        return Ok(await _categoryService.GetById(id));
     }
 
     
     
     [HttpPost]
-    public async Task<ActionResult> AddCategory([FromBody]Category category)
+    public async Task<ActionResult> AddCategory([FromBody]CategoryDto category)
     {
         if (!ModelState.IsValid)
         {
@@ -45,9 +45,9 @@ public class CategoryController:ControllerBase
         return Ok();
     }
 
-    [HttpPut("{id}/section/{section_id}")]
-    public async Task PutToSection([FromRoute]int id,[FromRoute]int section_id)
+    [HttpPut("{id}/section/{sectionId}")]
+    public async Task LinkToSection([FromRoute]int id,[FromRoute]int sectionId)
     {
-        await _categoryService.PutToSection(id, section_id);
+        await _categoryService.LinkToSection(id, sectionId);
     }
 }

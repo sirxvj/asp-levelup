@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ConsoleQueries.Models;
 
-namespace ConsoleQueries.Models
+namespace ConsoleQueries.Domain.Entities
 {
     public class Address
     {

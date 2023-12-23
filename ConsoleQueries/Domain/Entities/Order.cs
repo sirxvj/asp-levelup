@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ConsoleQueries.Domain.Entities;
 
 namespace ConsoleQueries.Models
 {
@@ -9,7 +10,7 @@ namespace ConsoleQueries.Models
         public long? UserId { get; set; }
         public int? Price { get; set; }
         public long? AddressId { get; set; }
-        public Status status { get; set; }
+        public Status Status { get; set; }
         public DateTime? CreatedAt { get; set; }
 
         public virtual Address? Address { get; set; }

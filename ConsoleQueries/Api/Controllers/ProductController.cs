@@ -1,4 +1,5 @@
 using ConsoleQueries.Api.DTOs;
+using ConsoleQueries.Application.ServiceInterfaces;
 using ConsoleQueries.Domain.Entities;
 using ConsoleQueries.Domain.ServiceInterfaces;
 using Mapster;
@@ -19,19 +20,17 @@ public class ProductController:ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<ProductDto>> GetById([FromRoute] int id)
     {
-        var product = await _productService.GetById(id);
-        return Ok(product.Adapt<ProductDto>());
+        return Ok(await _productService.GetById(id));
     }
 
-    [HttpGet("category/{cId}")]
-    public async Task<ActionResult<IEnumerable<ProductDto>>> GetByCategory([FromRoute]int cId)
+    [HttpGet("category/{categoryId}")]
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetByCategory([FromRoute]int categoryId)
     {
-        var products = await _productService.GetCategoryProducts(cId);
-        return Ok(products.Adapt<IEnumerable<ProductDto>>());
+        return Ok(await _productService.GetCategoryProducts(categoryId));
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateProduct([FromRoute]int id,[FromBody] Product product)
+    public async Task<ActionResult> UpdateProduct([FromRoute]int id,[FromBody] ProductDto product)
     {
         if (!ModelState.IsValid)
         {
@@ -42,7 +41,7 @@ public class ProductController:ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> NewProduct([FromBody] Product product)
+    public async Task<ActionResult> NewProduct([FromBody] ProductDto product)
     {
         if (!ModelState.IsValid)
         {

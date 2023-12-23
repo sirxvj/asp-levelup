@@ -19,12 +19,4 @@ namespace ConsoleQueries.Domain.Entities
 
         public virtual ICollection<Section> Sections { get; set; } = new List<Section>();
     }
-    public class CategoryValidator : AbstractValidator<Category>
-    {
-        public CategoryValidator()
-        {
-            RuleFor(x => x.Name).NotNull().NotEmpty();
-            RuleFor(x => x.Name).Length(2, 50);
-        }
-    }
 }

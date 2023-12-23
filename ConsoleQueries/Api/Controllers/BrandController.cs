@@ -1,12 +1,8 @@
 ﻿using ConsoleQueries.Api.DTOs;
-using ConsoleQueries.Domain;
-using ConsoleQueries.Domain.Entities;
-using ConsoleQueries.Domain.ServiceInterfaces;
-using ConsoleQueries.Models;
-using Mapster;
+using ConsoleQueries.Application.ServiceInterfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ConsoleQueries.Api;
+namespace ConsoleQueries.Api.Controllers;
 
 [Route("/api/[controller]")]
 [ApiController]
@@ -22,28 +18,26 @@ public class BrandController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<BrandDto>>> Brands() 
     {
-        var brands =  await _brandService.GetBrands();
-        return Ok(brands.Adapt<IEnumerable<BrandDto>>());
+        return Ok(await _brandService.GetBrands());
     }
-    [HttpPut("/{id}/name/{name}")]
-    public async Task<ActionResult> PutBrand([FromRoute] int id, [FromRoute]string name)
+    [HttpPut("{id}")]
+    public async Task<ActionResult> PutBrand([FromRoute] int id, [FromBody]BrandDto brand)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest();
         }
-        await _brandService.PutBrand(id, name);
+        await _brandService.PutBrand(id, brand);
         return Ok();
     }
     [HttpGet("{id}")]
     public async Task<ActionResult<BrandDto>> BrandById([FromRoute] int id)
     {
-        Brand? brand = await _brandService.GetBrandById(id);
-        return brand.Adapt<BrandDto>();
+        return await _brandService.GetBrandById(id);
     }
 
     [HttpPost]
-    public async Task<ActionResult> NewBrand([FromBody]Brand brand)
+    public async Task<ActionResult> AddBrand([FromBody]BrandDto brand)
     {
         if (!ModelState.IsValid)
         {

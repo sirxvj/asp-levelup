@@ -1,4 +1,5 @@
 using ConsoleQueries.Api.DTOs;
+using ConsoleQueries.Application.ServiceInterfaces;
 using ConsoleQueries.Domain.ServiceInterfaces;
 using ConsoleQueries.Models;
 using Mapster;
@@ -21,19 +22,17 @@ public class ReviewsController:ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<ReviewDto>> GetById([FromRoute] int id)
     {
-        var review = await _reviewsService.GetById(id);
-        return review.Adapt<ReviewDto>();
+        return await _reviewsService.GetById(id);
     }
 
-    [HttpGet("product/{pId}")]
-    public async Task<ActionResult<ReviewDto>> GetByProduct([FromRoute] int pId)
+    [HttpGet("product/{productId}")]
+    public async Task<ActionResult<ReviewDto>> GetByProduct([FromRoute] int productId)
     {
-        var reviews = await _reviewsService.GetByProduct(pId);
-        return reviews.Adapt<ReviewDto>();
+        return Ok(await _reviewsService.GetByProduct(productId));
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddReview([FromBody] Review review)
+    public async Task<ActionResult> AddReview([FromBody] ReviewDto review)
     {
         if (!ModelState.IsValid)
         {
@@ -44,7 +43,7 @@ public class ReviewsController:ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> UpdateReview([FromRoute] int id, [FromBody] Review review)
+    public async Task<ActionResult> UpdateReview([FromRoute] int id, [FromBody] ReviewDto review)
     {
         if (!ModelState.IsValid)
         {

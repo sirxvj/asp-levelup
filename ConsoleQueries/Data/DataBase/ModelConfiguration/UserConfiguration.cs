@@ -1,3 +1,4 @@
+using ConsoleQueries.Domain.Entities;
 using ConsoleQueries.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -35,7 +36,7 @@ public class UserConfiguration:IEntityTypeConfiguration<User>
 
         builder.Property(e => e.Username)
             .HasMaxLength(30);
-        builder.Property(e => e.type)
+        builder.Property(e => e.Type)
             .HasConversion<int>();
     }
 }
