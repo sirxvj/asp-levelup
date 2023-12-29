@@ -1,10 +1,11 @@
 using ConsoleQueries.Api.DTOs;
 using ConsoleQueries.Application.ServiceInterfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConsoleQueries.Api.Controllers;
 
-[Route("/api")]
+[Route("/api/[controller]")]
 [ApiController]
 public class LoginController:ControllerBase
 {
@@ -16,8 +17,13 @@ public class LoginController:ControllerBase
     }
 
     [HttpPost("/registration")]
-    public async Task Registration([FromBody]UserDto user)
+    public async Task<ActionResult> Registration([FromBody]UserDto user)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest();
+        }
         await _userService.AddUser(user);
+        return Ok();
     }
 }

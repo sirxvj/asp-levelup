@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ConsoleQueries.Api.Controllers;
 
-[Route("/api")]
+[Route("/api/[controller]")]
 [ApiController]
 public class OrderController:ControllerBase
 {
