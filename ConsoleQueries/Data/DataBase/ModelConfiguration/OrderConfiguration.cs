@@ -10,7 +10,7 @@ public class OrderConfiguration:IEntityTypeConfiguration<Order>
     {
         builder.ToTable("order");
                 
-        builder.Property(e => e.status)
+        builder.Property(e => e.Status)
             .HasConversion<int>();
                     
                 

@@ -1,41 +1,39 @@
-﻿using ConsoleQueries.Data;
+﻿using System.Reflection;
+using ConsoleQueries;
+using ConsoleQueries.Application.ServiceInterfaces;
+using ConsoleQueries.Application.Services;
+using ConsoleQueries.Data;
+using ConsoleQueries.Data.DataBase;
 using ConsoleQueries.Data.Repository;
 using ConsoleQueries.Domain;
+using ConsoleQueries.Domain.ServiceInterfaces;
+using ConsoleQueries.Middleware;
 using ConsoleQueries.Models;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<DataBaseContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-IConfigurationRoot configuration = new ConfigurationBuilder()
-    .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-    .AddJsonFile("appsettings.json")
-    .Build();
+ConfigureServices configureServices = new ConfigureServices(builder.Services);
+configureServices.Configure();
 
-builder.Services.AddControllers();
-builder.Services.AddDbContext<DataBaseContext>(options => options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddSingleton<IBrandService,BrandService>();
 var app = builder.Build();
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error");
+    //app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
+app.UseSwagger(); 
+app.UseSwaggerUI();
 
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
 app.UseAuthorization();
 
-// app.MapControllerRoute(
-//     name: "default",
-//     pattern: "{controller=Brand}/{action=Index}/{id?}");
-// app.MapControllerRoute(
-//     name: "default",
-//     pattern: "{controller=Brand}/{action=PutBrand}/{id?}/{name?}");
-// app.MapControllerRoute(
-//     name: "default",
-//     pattern: "{controller=Brand}/{action=NewBrand}/{name?}");
 app.MapControllers();
 
 app.Run();

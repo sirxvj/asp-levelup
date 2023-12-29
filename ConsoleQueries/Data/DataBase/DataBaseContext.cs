@@ -1,8 +1,9 @@
 ﻿using System.Reflection;
+using ConsoleQueries.Domain.Entities;
 using ConsoleQueries.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ConsoleQueries.Data
+namespace ConsoleQueries.Data.DataBase
 {
     public partial class DataBaseContext : Microsoft.EntityFrameworkCore.DbContext
     {
@@ -34,17 +35,15 @@ namespace ConsoleQueries.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-            { 
+            {
                 optionsBuilder
                     .UseLazyLoadingProxies();
-                    //.UseNpgsql();
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasPostgresEnum<Status>().HasPostgresEnum<UserType>(); //HasPostgresEnum("status", new[] { "InReview", "InDelivery", "Completed" })
-                //.HasPostgresEnum("user_type", new[] { "ADMIN", "CUSTOMER" });
+            modelBuilder.HasPostgresEnum<Status>().HasPostgresEnum<UserType>(); 
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
             
