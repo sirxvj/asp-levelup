@@ -35,7 +35,7 @@ public class BrandService:IBrandService
         return (await _dataBase.Brands.FirstAsync(b => b.Id == id)).Adapt<BrandDto>();
     }
 
-    public async Task AddBrand(BrandDto? brand)
+    public async Task AddBrand(BrandDto brand)
     {
         _dataBase.Add(brand);
         await _dataBase.SaveChangesAsync();

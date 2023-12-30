@@ -1,12 +1,11 @@
 using ConsoleQueries.Api.DTOs;
 using ConsoleQueries.Application.ServiceInterfaces;
-using ConsoleQueries.Domain.Entities;
-using ConsoleQueries.Domain.ServiceInterfaces;
-using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConsoleQueries.Api.Controllers;
 
+[Authorize]
 [Route("/api/[controller]")]
 [ApiController]
 public class ProductController:ControllerBase

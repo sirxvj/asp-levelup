@@ -15,7 +15,7 @@ public class UserService:IUserService
     {
         _dbc = dbc;
     }
-
+        
     public async Task<UserDto> GetUserById(int id)
     {
         return (await _dbc.Users.Where(u => u.Id == id).FirstAsync()).Adapt<UserDto>();

@@ -8,6 +8,6 @@ public interface IBrandService
     Task<IEnumerable<BrandDto>> GetBrands();
     Task PutBrand(int id,BrandDto brand);
     Task<BrandDto> GetBrandById(int id);
-    Task AddBrand(BrandDto? brand);
+    Task AddBrand(BrandDto brand);
     Task DeleteBrand(int id);
 }
