@@ -24,6 +24,7 @@ public class MediaController:ControllerBase
         return Ok(imgs);
     }
     
+    [Authorize(Roles = "Admin")]
     [HttpPost("product/{productId}")]
     public async Task<IActionResult> PostImageAsync([FromRoute]int productId,[FromQuery(Name = "fileName")]string fileName,[FromQuery(Name="fileType")]string fileType) {
         using var buffer = new System.IO.MemoryStream();
@@ -37,7 +38,7 @@ public class MediaController:ControllerBase
         await _mediaService.AddImages(image);
         return NoContent();
     }
-
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task DeleteImage([FromRoute] int id)
     {

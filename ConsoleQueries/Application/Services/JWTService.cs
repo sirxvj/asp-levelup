@@ -4,6 +4,7 @@ using System.Text;
 using ConsoleQueries.Api.DTOs;
 using ConsoleQueries.Application.ServiceInterfaces;
 using ConsoleQueries.Data.DataBase;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace ConsoleQueries.Application.Services;
@@ -17,23 +18,25 @@ public class JwtService:IJWTService
         _dbc = dbc;
         _configuration = configuration;
     }
-    public string Authenticate(UserFormDto userForm)
+    public async Task<string> Authenticate(UserFormDto userForm)
     {
         if(!_dbc.Users.Any(x=>x.Email==userForm.Email&&x.Password==userForm.Password))
         {
             return String.Empty;
         }
+        var user = await _dbc.Users.Where(x => x.Email == userForm.Email && x.Password == userForm.Password).FirstOrDefaultAsync();
         var tokenHandler = new JwtSecurityTokenHandler();
         var tokenKey = Encoding.UTF8.GetBytes(_configuration["JWT:KEY"]!);
         var tokenDescriptor = new SecurityTokenDescriptor()
         {
             Subject = new ClaimsIdentity(new Claim[]
             {
-                new Claim(ClaimTypes.Name,userForm.Email)   
+                new Claim(ClaimTypes.Name,user?.Email ?? throw new InvalidOperationException()),
+                new Claim(ClaimTypes.Role,user.type.ToString())
             }),
             Audience = _configuration["JWT:Audience"],
             Issuer = _configuration["JWT:Issuer"],
-            Expires = DateTime.UtcNow.AddMinutes(1),
+            Expires = DateTime.UtcNow.AddMinutes(10),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey),
                 SecurityAlgorithms.HmacSha256Signature)
         };

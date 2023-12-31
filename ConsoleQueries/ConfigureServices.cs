@@ -54,6 +54,9 @@ public static class ConfigureServices
         builder.Services.AddScoped<IProductService, ProductService>();
         builder.Services.AddScoped<IMediaService, MediaService>();
         builder.Services.AddScoped<IUserService, UserService>();
+        builder.Services.AddScoped<IColorService, ColorService>();
+        builder.Services.AddScoped<IAddressService, AddressService>();
+        builder.Services.AddScoped<ISizeService, SizeService>();
         builder.Services.AddScoped<IReviewsService, ReviewsService>();
         builder.Services.AddSingleton<IJWTService, JwtService>();
         builder.Services.AddSwaggerGen();

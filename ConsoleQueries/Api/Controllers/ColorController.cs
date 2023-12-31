@@ -23,6 +23,7 @@ public class ColorController:ControllerBase
         return Ok(await _colorService.GetColors());
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult> AddColor([FromBody]ColorDto color)
     {

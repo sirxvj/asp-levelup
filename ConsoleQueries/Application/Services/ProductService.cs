@@ -18,7 +18,7 @@ public class ProductService:IProductService
 
     public async Task<ProductDto> GetById(int id)
     {
-        return (await _dbc.Products.Where(p => p.Id == id).FirstAsync()).Adapt<ProductDto>();
+        return (await _dbc.Products.Where(p => p.Id == id).FirstOrDefaultAsync()).Adapt<ProductDto>();
     }
 
     public async Task<IEnumerable<ProductDto>> GetCategoryProducts(int cId)

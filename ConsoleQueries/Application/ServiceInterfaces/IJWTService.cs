@@ -4,5 +4,5 @@ namespace ConsoleQueries.Application.ServiceInterfaces;
 
 public interface IJWTService
 {
-    string Authenticate(UserFormDto userForm);
+    Task<string> Authenticate(UserFormDto userForm);
 }

@@ -29,6 +29,7 @@ public class CategoryController:ControllerBase
         return Ok(await _categoryService.GetById(id));
     }
     
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult> AddCategory([FromBody]CategoryDto category)
     {
@@ -40,6 +41,7 @@ public class CategoryController:ControllerBase
         return Ok();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}/section/{sectionId}")]
     public async Task LinkToSection([FromRoute]int id,[FromRoute]int sectionId)
     {

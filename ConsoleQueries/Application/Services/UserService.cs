@@ -18,19 +18,22 @@ public class UserService:IUserService
         
     public async Task<UserDto> GetUserById(int id)
     {
-        return (await _dbc.Users.Where(u => u.Id == id).FirstAsync()).Adapt<UserDto>();
+        return (await _dbc.Users.Where(u => u.Id == id).FirstOrDefaultAsync()).Adapt<UserDto>();
     }
 
     public async Task UpdateUser(int id, UserDto user)
     {
-        var edited = await _dbc.Users.Where(u => u.Id == id).FirstAsync();
-        _dbc.Entry(edited).CurrentValues.SetValues(new { user.Username, type = user.Type,user.Phone,user.Email,user.FirstName,user.LastName });
+        var edited = await _dbc.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
+        if(edited is not null)
+            _dbc.Entry(edited).CurrentValues.SetValues(new
+                { user.Username, type = user.Type, user.Phone, user.Email, user.FirstName, user.LastName });
         await _dbc.SaveChangesAsync();
     }
 
-    public async Task AddUser(UserDto user)
+    public async Task AddUser(RegistrationFormDto user)
     {
-        _dbc.Users.Add(user.Adapt<User>());
+        var newUser = user.Adapt<User>();
+        _dbc.Users.Add(newUser);
         await _dbc.SaveChangesAsync();
     }
 }

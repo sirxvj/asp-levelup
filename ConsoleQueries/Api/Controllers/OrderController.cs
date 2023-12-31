@@ -30,6 +30,7 @@ public class OrderController:ControllerBase
         return Ok(await _orderService.GetOrderById(id));
     }
 
+    
     [HttpPost]
     public async Task<ActionResult> AddOrder([FromBody]OrderDto order)
     {
@@ -40,7 +41,7 @@ public class OrderController:ControllerBase
         await _orderService.AddOrder(order);
         return Ok();
     }
-
+    [Authorize(Roles = "Admin")]
     [HttpDelete]
     public async Task<ActionResult> DeleteOrder(long id)
     {

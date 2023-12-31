@@ -19,9 +19,9 @@ public class LoginController:ControllerBase
     [AllowAnonymous]
     [HttpPost]
     [Route("auth")]
-    public IActionResult Authenticate([FromBody]UserFormDto userForm)
+    public async Task<IActionResult> Authenticate([FromBody]UserFormDto userForm)
     {
-        var token = _jwtService.Authenticate(userForm);
+        var token = await _jwtService.Authenticate(userForm);
         if (token == String.Empty)
         {
             return Unauthorized();
@@ -29,13 +29,9 @@ public class LoginController:ControllerBase
         return Ok(token);
     }
     
-    [HttpPost("/registration")]
-    public async Task<ActionResult> Registration([FromBody]UserDto user)
+    [HttpPost("registration")]
+    public async Task<ActionResult> Registration([FromBody]RegistrationFormDto user)
     {
-        if (!ModelState.IsValid)
-        {
-            return BadRequest();
-        }
         await _userService.AddUser(user);
         return Ok();
     }

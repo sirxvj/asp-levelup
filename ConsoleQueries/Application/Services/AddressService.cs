@@ -18,7 +18,7 @@ public class AddressService:IAddressService
 
     public async Task<AddressDto> GetById(int id)
     {
-        return (await _dbc.Addresses.Where(a => a.Id == id).FirstAsync()).Adapt<AddressDto>();
+        return (await _dbc.Addresses.Where(a => a.Id == id).FirstOrDefaultAsync()).Adapt<AddressDto>();
     }
 
     public async Task AddAddress(AddressDto address)

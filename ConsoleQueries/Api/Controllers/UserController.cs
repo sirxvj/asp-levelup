@@ -36,7 +36,7 @@ public class UserController:ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddUser([FromBody] UserDto user)
+    public async Task<ActionResult> AddUser([FromBody] RegistrationFormDto user)
     {
         if (!ModelState.IsValid)
         {

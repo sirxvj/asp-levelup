@@ -21,13 +21,15 @@ public class ProductController:ControllerBase
     {
         return Ok(await _productService.GetById(id));
     }
-
+    
+    
     [HttpGet("category/{categoryId}")]
     public async Task<ActionResult<IEnumerable<ProductDto>>> GetByCategory([FromRoute]int categoryId)
     {
         return Ok(await _productService.GetCategoryProducts(categoryId));
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateProduct([FromRoute]int id,[FromBody] ProductDto product)
     {
@@ -39,6 +41,7 @@ public class ProductController:ControllerBase
         return Ok();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult> NewProduct([FromBody] ProductDto product)
     {

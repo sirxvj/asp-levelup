@@ -30,6 +30,7 @@ public class SectionController:ControllerBase
         return Ok((await _sectionService.GetSectionById(id)).Adapt<SectionDto>());
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}/name/{name}")]
     public async Task<ActionResult> ChangeName([FromRoute] short id, [FromRoute] string name)
     {
@@ -41,6 +42,7 @@ public class SectionController:ControllerBase
         return Ok();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult> NewSection([FromBody]SectionDto section)
     {

@@ -1,5 +1,4 @@
 ﻿using ConsoleQueries.Models;
-using FluentValidation;
 
 namespace ConsoleQueries.Domain.Entities
 {
@@ -12,7 +11,7 @@ namespace ConsoleQueries.Domain.Entities
         public string? Email { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public UserType Type { get; set; }
+        public UserType type { get; set; }
         public virtual ICollection<Address> Addresses { get; set; } = new List<Address>();
         public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
         public virtual ICollection<Order> Orders { get; set; } = new List<Order>();

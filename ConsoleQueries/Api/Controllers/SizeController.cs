@@ -23,6 +23,7 @@ public class SizeController:ControllerBase
         return Ok(await _sizeService.GetSizes());
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult> AddSize([FromBody]SizeDto size)
     {
