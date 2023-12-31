@@ -17,12 +17,12 @@ public class OrderService:IOrderService
 
     public async Task<OrderDto> GetOrderById(long id)
     {
-        return (await _dbc.Orders.Where(o => o.Id == id).FirstAsync()).Adapt<OrderDto>();
+        return (await _dbc.Orders.Where(o => o.Id == id).FirstOrDefaultAsync()).Adapt<OrderDto>();
     }
 
     public async Task<IEnumerable<OrderItemsDto>> GetOrderItems(long id)
     {
-        return (await _dbc.OrderItems.Where(o => o.OrderId == id).FirstAsync()).Adapt<IEnumerable<OrderItemsDto>>();
+        return (await _dbc.OrderItems.Where(o => o.OrderId == id).FirstOrDefaultAsync()).Adapt<IEnumerable<OrderItemsDto>>();
     }
 
     public async Task AddOrder(OrderDto order)
@@ -33,7 +33,7 @@ public class OrderService:IOrderService
 
     public async Task DeleteOrder(long id)
     {
-        var item = _dbc.Orders.Where(o => o.Id == id).FirstAsync();
+        var item = _dbc.Orders.Where(o => o.Id == id).FirstOrDefaultAsync();
         _dbc.Remove(item);
         await _dbc.SaveChangesAsync();
     }

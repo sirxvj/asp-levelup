@@ -27,7 +27,9 @@ public class MediaService:IMediaService
 
     public async Task DeleteImage(int id)
     {
-        _dbc.Media.Remove(await _dbc.Media.Where(m => m.Id == id).FirstAsync());
+        var img = await _dbc.Media.Where(m => m.Id == id).FirstOrDefaultAsync();
+        if (img is not null)
+            _dbc.Media.Remove(img);
         await _dbc.SaveChangesAsync();
     }
 }

@@ -32,12 +32,12 @@ public class BrandService:IBrandService
 
     public async Task<BrandDto> GetBrandById(int id)
     {
-        return (await _dataBase.Brands.FirstAsync(b => b.Id == id)).Adapt<BrandDto>();
+        return (await _dataBase.Brands.FirstOrDefaultAsync(b => b.Id == id)).Adapt<BrandDto>();
     }
 
-    public async Task AddBrand(BrandDto? brand)
+    public async Task AddBrand(BrandDto brand)
     {
-        _dataBase.Add(brand);
+        _dataBase.Add(brand.Adapt<Brand>());
         await _dataBase.SaveChangesAsync();
     }
 

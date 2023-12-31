@@ -1,9 +1,11 @@
 using ConsoleQueries.Api.DTOs;
 using ConsoleQueries.Application.ServiceInterfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConsoleQueries.Api.Controllers;
 
+[Authorize]
 [Route("/api/[controller]")]
 [ApiController]
 public class AddressController:ControllerBase

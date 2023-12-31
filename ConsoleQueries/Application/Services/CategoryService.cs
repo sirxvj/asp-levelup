@@ -28,9 +28,9 @@ public class CategoryService:ICategoryService
 
     public async Task LinkToSection(int categoryId,int sectionId)
     {
-        var sec =  await _dbc.Sections.FirstAsync(s => s.Id == sectionId);
-        var cat = await _dbc.Categories.FirstAsync(c => c.Id == categoryId);
-        cat.Sections.Add(sec);
+        var sec =  await _dbc.Sections.FirstOrDefaultAsync(s => s.Id == sectionId);
+        var cat = await _dbc.Categories.FirstOrDefaultAsync(c => c.Id == categoryId);
+        if (sec != null) cat?.Sections.Add(sec);
         await _dbc.SaveChangesAsync();
     }
 

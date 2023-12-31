@@ -20,7 +20,7 @@ public class ReviewsService:IReviewsService
     {
         return (await _dbc.Reviews
             .Where(r => r.Id == id)
-            .FirstAsync())
+            .FirstOrDefaultAsync())
             .Adapt<ReviewDto>();
     }
 
@@ -40,8 +40,8 @@ public class ReviewsService:IReviewsService
 
     public async Task UpdateReview(int id, ReviewDto review)
     {
-        var edited = await _dbc.Reviews.Where(r => r.Id == id).FirstAsync();
-        _dbc.Entry(edited).CurrentValues.SetValues(new
+        var edited = await _dbc.Reviews.Where(r => r.Id == id).FirstOrDefaultAsync();
+        if(edited is not null) _dbc.Entry(edited).CurrentValues.SetValues(new
         {
             review.ProductId,
             review.Comment,
@@ -54,11 +54,13 @@ public class ReviewsService:IReviewsService
 
     public async Task DeleteReview(int id)
     {
-        _dbc.Reviews.Remove(
-            await _dbc.Reviews
+        var review = await _dbc.Reviews
             .Where(r => r.Id == id)
-            .FirstAsync()
-        );
+            .FirstOrDefaultAsync();
+        if(review is not null)
+            _dbc.Reviews.Remove(
+                review
+            );
         await _dbc.SaveChangesAsync();
     }
 }

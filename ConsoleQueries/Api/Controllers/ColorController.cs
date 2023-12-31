@@ -1,9 +1,11 @@
 using ConsoleQueries.Api.DTOs;
 using ConsoleQueries.Application.ServiceInterfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConsoleQueries.Api.Controllers;
 
+[Authorize]
 [Route("/api/[controller]")]
 [ApiController]
 public class ColorController:ControllerBase
@@ -21,6 +23,7 @@ public class ColorController:ControllerBase
         return Ok(await _colorService.GetColors());
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult> AddColor([FromBody]ColorDto color)
     {

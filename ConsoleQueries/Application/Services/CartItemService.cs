@@ -29,7 +29,7 @@ public class CartItemService:ICartItemService
 
     public async Task DeleteCartItemByIds(int userId,long productVariantId)
     {
-        var item = _dbc.CartItems.Where(i => i.UserId == userId && i.ProductVariantId == productVariantId).FirstAsync();
+        var item = _dbc.CartItems.Where(i => i.UserId == userId && i.ProductVariantId == productVariantId).FirstOrDefaultAsync();
         _dbc.Remove(item);
         await _dbc.SaveChangesAsync();
     }

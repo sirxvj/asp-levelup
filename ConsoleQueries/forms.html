@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="forms">
+    <h1>Login</h1>
+    <label>
+        <input id="LogMail" placeholder="email">
+    </label>
+    <br>
+    <label>
+        <input id="LogPass" placeholder="password">
+    </label>
+    <br>
+    <button id="Log">Login</button>
+</div>
+<div>
+    <h1>Registration</h1>
+    <input id="regEmail" placeholder="Email">
+    <br>
+    <input id="regPass" placeholder="Password">
+    <br>
+    <input id="regName" placeholder="First Name">
+    <br>
+    <input id="regSName" placeholder="Last Name">
+    <br>
+    <input type="radio" id="AdminButt" name = "utype" value="Admin"><label>Admin</label>
+    <input type="radio" id="CustomerButt" name = "utype" value="Customer"><label>Customer</label>
+    <br>
+    <button id="Reg">Register</button>
+</div>    
+    
+    <script>
+        const loginButton = document.getElementById("Log");
+        const registerButton = document.getElementById("Reg");
+        const emailLog = document.getElementById("LogMail");
+        const passLog = document.getElementById("LogPass");
+        const regEmail = document.getElementById("regEmail");
+        const firstName = document.getElementById("regName");
+        const secName = document.getElementById("regSName");
+        const AdminButt = document.getElementById("AdminButt");
+        const regPass = document.getElementById("regPass");
+        
+        loginButton.onclick = async ()=>{
+            const response = await fetch("/api/login/auth", {
+                method: "POST",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    Email:emailLog.value,
+                    Password:passLog.value
+                })
+            });
+            if (response.ok === true) {
+                const token = await response.json();
+                alert(token)
+            }
+        }
+        
+        registerButton.onclick = async ()=>{
+            let userPermission = 0;
+            if(AdminButt.checked)
+                userPermission=1;
+            
+            const response = await fetch("/api/login/registration", {
+                method: "POST",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify(
+                    {
+                        Username:"username", 
+                        Phone:"233232323",
+                        Email:regEmail.value,
+                        FirstName:firstName.value,
+                        LastName:secName.value,
+                        Type:userPermission,
+                        password:regPass.value
+                    }
+                )
+            });
+            if (response.ok === true) {
+                const token = await response.json();
+                alert("Registration complete")
+            }
+        }
+        
+        
+        
+        
+    </script>
+</body>
+</html>

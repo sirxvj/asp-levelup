@@ -1,9 +1,11 @@
 ﻿using ConsoleQueries.Api.DTOs;
 using ConsoleQueries.Application.ServiceInterfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConsoleQueries.Api.Controllers;
 
+[Authorize]
 [Route("/api/[controller]")]
 [ApiController]
 public class BrandController : ControllerBase
@@ -20,6 +22,7 @@ public class BrandController : ControllerBase
     {
         return Ok(await _brandService.GetBrands());
     }
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<ActionResult> PutBrand([FromRoute] int id, [FromBody]BrandDto brand)
     {
@@ -31,11 +34,11 @@ public class BrandController : ControllerBase
         return Ok();
     }
     [HttpGet("{id}")]
-    public async Task<ActionResult<BrandDto>> BrandById([FromRoute] int id)
+    public async Task<ActionResult<BrandDto?>> BrandById([FromRoute] int id)
     {
-        return await _brandService.GetBrandById(id);
+        return Ok(await _brandService.GetBrandById(id));
     }
-
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult> AddBrand([FromBody]BrandDto brand)
     {
@@ -46,7 +49,7 @@ public class BrandController : ControllerBase
         await _brandService.AddBrand(brand);
         return Ok();
     }
-
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteBrand([FromRoute]int id)
     {

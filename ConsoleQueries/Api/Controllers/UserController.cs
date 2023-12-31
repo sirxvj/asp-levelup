@@ -1,15 +1,12 @@
 using ConsoleQueries.Api.DTOs;
 using ConsoleQueries.Application.ServiceInterfaces;
-using ConsoleQueries.Domain.Entities;
-using ConsoleQueries.Domain.ServiceInterfaces;
-using ConsoleQueries.Models;
-using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConsoleQueries.Api.Controllers;
 
 
-
+[Authorize]
 [Route("/api/[controller]")]
 [ApiController]
 public class UserController:ControllerBase
@@ -39,7 +36,7 @@ public class UserController:ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> AddUser([FromBody] UserDto user)
+    public async Task<ActionResult> AddUser([FromBody] RegistrationFormDto user)
     {
         if (!ModelState.IsValid)
         {

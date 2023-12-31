@@ -4,7 +4,7 @@ using ConsoleQueries.Data.DataBase;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 
-namespace ConsoleQueries.Domain.Entities;
+namespace ConsoleQueries.Application.Services;
 
 public class ProductVariantService:IProductVariantService
 {

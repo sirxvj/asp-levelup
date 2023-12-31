@@ -1,10 +1,12 @@
 using ConsoleQueries.Api.DTOs;
 using ConsoleQueries.Application.ServiceInterfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConsoleQueries.Api.Controllers;
 
+[Authorize]
 [Route("/api/[controller]")]
 [ApiController]
 public class OrderController:ControllerBase
@@ -28,6 +30,7 @@ public class OrderController:ControllerBase
         return Ok(await _orderService.GetOrderById(id));
     }
 
+    
     [HttpPost]
     public async Task<ActionResult> AddOrder([FromBody]OrderDto order)
     {
@@ -38,7 +41,7 @@ public class OrderController:ControllerBase
         await _orderService.AddOrder(order);
         return Ok();
     }
-
+    [Authorize(Roles = "Admin")]
     [HttpDelete]
     public async Task<ActionResult> DeleteOrder(long id)
     {

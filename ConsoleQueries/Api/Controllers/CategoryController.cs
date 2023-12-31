@@ -1,14 +1,11 @@
 using ConsoleQueries.Api.DTOs;
 using ConsoleQueries.Application.ServiceInterfaces;
-using ConsoleQueries.Data.DataBase;
-using ConsoleQueries.Domain.Entities;
-using ConsoleQueries.Domain.ServiceInterfaces;
-using ConsoleQueries.Models;
-using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConsoleQueries.Api.Controllers;
 
+[Authorize]
 [Route("/api/[controller]")]
 [ApiController]
 public class CategoryController:ControllerBase
@@ -31,9 +28,8 @@ public class CategoryController:ControllerBase
     {
         return Ok(await _categoryService.GetById(id));
     }
-
     
-    
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult> AddCategory([FromBody]CategoryDto category)
     {
@@ -45,6 +41,7 @@ public class CategoryController:ControllerBase
         return Ok();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}/section/{sectionId}")]
     public async Task LinkToSection([FromRoute]int id,[FromRoute]int sectionId)
     {
