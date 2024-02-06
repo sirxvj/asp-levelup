@@ -1,6 +1,6 @@
 using ConsoleQueries.Api.DTOs;
 using ConsoleQueries.Application.ServiceInterfaces;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConsoleQueries.Api.Controllers;
@@ -10,19 +10,28 @@ namespace ConsoleQueries.Api.Controllers;
 public class LoginController:ControllerBase
 {
     private readonly IUserService _userService;
-
-    public LoginController(IUserService userService)
+    private readonly IJWTService _jwtService;
+    public LoginController(IUserService userService, IJWTService jwtService)
     {
         _userService = userService;
+        _jwtService = jwtService;
     }
-
-    [HttpPost("/registration")]
-    public async Task<ActionResult> Registration([FromBody]UserDto user)
+    [AllowAnonymous]
+    [HttpPost]
+    [Route("auth")]
+    public async Task<IActionResult> Authenticate([FromBody]UserFormDto userForm)
     {
-        if (!ModelState.IsValid)
+        var token = await _jwtService.Authenticate(userForm);
+        if (token == String.Empty)
         {
-            return BadRequest();
+            return Unauthorized();
         }
+        return Ok(token);
+    }
+    
+    [HttpPost("registration")]
+    public async Task<ActionResult> Registration([FromBody]RegistrationFormDto user)
+    {
         await _userService.AddUser(user);
         return Ok();
     }

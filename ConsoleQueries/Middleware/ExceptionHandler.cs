@@ -22,6 +22,7 @@ public class ExceptionHandlerMiddleware:IMiddleware
         catch (Exception ex)
         {
             context.Response.StatusCode = 500;
+            _logger.LogError(ex.StackTrace);
             _logger.LogError(ex.Message);
         }
     }

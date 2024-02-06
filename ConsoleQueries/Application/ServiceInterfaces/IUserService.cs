@@ -7,6 +7,8 @@ public interface IUserService
 {
     Task<UserDto> GetUserById(int id);
     Task UpdateUser(int id, UserDto user);
-    Task AddUser(UserDto user);
+    Task AddUser(RegistrationFormDto user);
+    
+    
     
 }

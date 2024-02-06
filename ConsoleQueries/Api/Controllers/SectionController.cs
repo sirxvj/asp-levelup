@@ -1,12 +1,12 @@
 using ConsoleQueries.Api.DTOs;
 using ConsoleQueries.Application.ServiceInterfaces;
-using ConsoleQueries.Domain.Entities;
-using ConsoleQueries.Domain.ServiceInterfaces;
 using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConsoleQueries.Api.Controllers;
 
+[Authorize]
 [Route("/api/[controller]")]
 [ApiController]
 public class SectionController:ControllerBase
@@ -30,6 +30,7 @@ public class SectionController:ControllerBase
         return Ok((await _sectionService.GetSectionById(id)).Adapt<SectionDto>());
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}/name/{name}")]
     public async Task<ActionResult> ChangeName([FromRoute] short id, [FromRoute] string name)
     {
@@ -41,6 +42,7 @@ public class SectionController:ControllerBase
         return Ok();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult> NewSection([FromBody]SectionDto section)
     {

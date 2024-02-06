@@ -26,7 +26,7 @@ public class SectionService:ISectionService
     {
         return (await _dataBase.Sections
             .Where(s => s.Id==id)
-            .FirstAsync())
+            .FirstOrDefaultAsync())
             .Adapt<SectionDto>();
     }
 
@@ -38,8 +38,8 @@ public class SectionService:ISectionService
 
     public async Task ChangeName(short id, string name)
     {
-        var changed = await _dataBase.Sections.Where(s => s.Id == id).FirstAsync();
-        changed.Name = name;
+        var changed = await _dataBase.Sections.Where(s => s.Id == id).FirstOrDefaultAsync();
+        if (changed != null) changed.Name = name;
         await _dataBase.SaveChangesAsync();
     }
 }

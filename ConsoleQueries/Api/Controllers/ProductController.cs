@@ -1,12 +1,11 @@
 using ConsoleQueries.Api.DTOs;
 using ConsoleQueries.Application.ServiceInterfaces;
-using ConsoleQueries.Domain.Entities;
-using ConsoleQueries.Domain.ServiceInterfaces;
-using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConsoleQueries.Api.Controllers;
 
+[Authorize]
 [Route("/api/[controller]")]
 [ApiController]
 public class ProductController:ControllerBase
@@ -22,13 +21,15 @@ public class ProductController:ControllerBase
     {
         return Ok(await _productService.GetById(id));
     }
-
+    
+    
     [HttpGet("category/{categoryId}")]
     public async Task<ActionResult<IEnumerable<ProductDto>>> GetByCategory([FromRoute]int categoryId)
     {
         return Ok(await _productService.GetCategoryProducts(categoryId));
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<ActionResult> UpdateProduct([FromRoute]int id,[FromBody] ProductDto product)
     {
@@ -40,6 +41,7 @@ public class ProductController:ControllerBase
         return Ok();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult> NewProduct([FromBody] ProductDto product)
     {
